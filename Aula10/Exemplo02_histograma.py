@@ -1,4 +1,3 @@
-# Consigo afirmar que todas as delegacias (CISP) possuem um padrão médio de recuperação de veículo ou isso é meio disperso? Será que existe um padrão predominante ou não? 
 import os
 import pandas as pd
 import numpy as np
@@ -106,14 +105,21 @@ except ImportError as e:
 try:
     print(30*"*")
     print("\nVisualizando os dados")
-    plt.subplots(1, 2, figsize=(16, 7))
+    plt.subplots(2, 2, figsize=(16, 7))
     plt.suptitle ("Análise de recuperação de veículos no RJ")
 
-    plt.subplot(1,2,1)
+    plt.subplot(2,2,1)
     plt.boxplot(array_recuperacao_veiculos, vert=False, showmeans=True)
-    plt.title("Boxplot dos Dados")
-# Segundo subplot: Exibição de informações estatísticas
-    plt.subplot(1, 2, 2)  # Configurar o segundo gráfico no lado direito
+    plt.title("Boxplot Recuperação de Veículos")
+
+# Segundo subplot: histograma
+    plt.subplot(2, 2, 2)
+    plt.hist(array_recuperacao_veiculos, bins=50, edgecolor='black')
+    plt.axvline(media_recuperacao_veiculos, color ="g", linewidth=1)
+    plt.axvline(mediana_recuperacao_veiculo, color="y", linewidth=1)
+    plt.title("Histograma Recuperação de Veículos")
+
+    plt.subplot(2, 2, 3)  # Configurar o segundo gráfico no lado direito
     plt.title("Medidas Observadas")
     plt.text(0.1, 0.9, f'Média: {media_recuperacao_veiculos}', fontsize=12)
     plt.text(0.1, 0.8, f'Mediana: {mediana_recuperacao_veiculo}', fontsize=12)
@@ -126,25 +132,17 @@ try:
     plt.text(0.1, 0.1, f'Maior valor: {maximo}', fontsize=12)
     plt.text(0.1, 0.0, f'Amplitude Total: {amplitude}', fontsize=12)
 
-    plt.axis('off') #desativando os eixos
+
+    plt.subplot(2, 2, 4)  # Configurar o segundo gráfico no lado direito
+    plt.title("Medidas Estatísticas")
+    plt.text(0.1, 0.9, f'Assimetria: {assimetria}', fontsize=12)
+    plt.text(0.1, 0.8, f'Curtose: {curtose}', fontsize=12)
+
+
+ #Mostrando
     plt.tight_layout()
     plt.show()
-
 
 except ImportError as e:
     print (f'Erro ao visualizar dados: {e}')
     exit()       
-# Respondendo as questões:
-print(30*"*")    
-print ("\nRESPONDENDO AS QUESTÕES")    
-print (f"""A média de recuperação de veículos é {media_recuperacao_veiculos}, enquanto a mediana é {mediana_recuperacao_veiculo}. A distância relativa entre a média e a mediana é de {distancia_media_mediana}, o que indica que há uma forte assimetria na distribuição.
-Além disso, a amplitude de {amplitude} e o intervalo interquartil (IQR) de {iqr} confirmam que os dados são bastante dispersos.
-Portanto, não há um padrão uniforme entre as delegacias, e os valores de recuperação variam muito.""")
-
-print (f"""Os valores estão concentrados abaixo de Q3 ({q3}), mas há delegacias com valores muito maiores que a média.
-Isso significa que não existe um padrão predominante, e os dados refletem uma variação significativa.""")
-
-print (f"""Sim, as delegacias com valores acima do limite superior ({lim_superior}) são consideradas outliers superiores, ou seja, delegacias que fogem ao padrão por recuperar muito mais veículos do que a maioria.
-As delegacias 59, 39, 21, 34 e 64 recuperaram muito mais veículos do que as outras, com valores de recuperação variando de 19437 a 29429. Essas são as delegacias que mais se destacam no estado.""")
-
-print (f"""As delegacias com valores abaixo de Q1 ({q1}) são as que têm as menores recuperações. Essas delegacias apresentam níveis de recuperação muito baixos em relação às demais.""")
